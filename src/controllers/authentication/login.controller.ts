@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt'
 import { UserData } from '../../constant/interfaces/users';
-import pool from '../../db/pgdb';
+import { pool } from '../../db/pgdb';
 import CustomError from '../../Errors/customError';
 import createTokens from '../../helpers/createTokens';
 import { GENERAL_ERROR, VALIDATIONS } from '../../constant/enums/validations';

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import pool from "../../db/pgdb";
+import { pool } from "../../db/pgdb";
 import { GENERAL_ERROR, LINKS, VALIDATIONS } from "../../constant/enums/validations";
 
 export const activeAccount = async (req: Request, res: Response) => {

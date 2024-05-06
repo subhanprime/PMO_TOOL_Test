@@ -1,4 +1,4 @@
-import pool from "../../db/pgdb";
+import { pool } from "../../db/pgdb";
 import { NextFunction, Request, Response } from "express";
 import CustomError from "../../Errors/customError";
 import { VALIDATIONS, GENERAL_ERROR } from "../../constant/enums/validations";

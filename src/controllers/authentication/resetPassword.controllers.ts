@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import { VALIDATIONS } from "../../constant/enums/validations";
-import pool from "../../db/pgdb";
+import { pool } from "../../db/pgdb";
 
 export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {

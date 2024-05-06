@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 // const bodyParser = require('body-parser');
 import bodyParser from 'body-parser';
-import pool from './db/pgdb';
+import { pool, sequelize } from './db/pgdb';
 import rootRouter from './routes/index';
 import ErrorHandler from './Errors/errorHandler';
 import swaggerUi from 'swagger-ui-express';
@@ -41,6 +41,17 @@ const port = 8080;
 
 app.use('/api', rootRouter);
 
+
+async function testDatabaseConnection() {
+    try {
+        await sequelize.authenticate();
+        console.log('Database connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}
+
+
 app.get('/', async (req: Request, res: Response) => {
     console.log('running');
     try {
@@ -54,4 +65,5 @@ app.get('/', async (req: Request, res: Response) => {
 
 app.listen(port, () => {
     console.log(`Server is running on port  ${port}`);
+    testDatabaseConnection()
 });
