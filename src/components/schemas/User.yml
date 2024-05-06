@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Your API Title
+  version: 1.0.0
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the user
+        name:
+          type: string
+          description: Name of the user
+
+
