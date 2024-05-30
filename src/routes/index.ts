@@ -5,14 +5,31 @@ import active_account from "./active_account.routes";
 import AllUsers from "./allUsers.routes";
 import { resetPassword } from "../controllers";
 import projects from "./projects.routes";
-
+import Teams from "./teams/teams.routes";
+import designationRouter from "./designation/designation.route";
+import departmentRouter from "./department/department.routes";
+import CountryRoute from "./country/country.routes";
+import ToolsRouter from "./tools/tools.routes";
+import taskType from "./tasktype/taskType.routes";
+import Tasks from "./tasks/tasks.routes";
+import Logistics from "./logistics/logistics.routes";
+import HumanResources from "./human_resources/index.routes";
 const router = Router();
 
 router.use("/account", active_account);
+router.use("/teams", Teams);
 router.use("/user", user);
 router.use("/allUsers", AllUsers);
 router.use("/login", loginRoute);
 router.use("/resetPassword", resetPassword);
 router.use("/project", projects);
+router.use("/designation", designationRouter);
+router.use("/department", departmentRouter);
+router.use("/country", CountryRoute);
+router.use("/tools", ToolsRouter);
+router.use("/taskType", taskType);
+router.use("/tasks", Tasks);
+router.use("/logistics", Logistics);
+router.use("/project_hr", HumanResources);
 
 export default router;

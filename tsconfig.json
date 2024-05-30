@@ -1,26 +1,25 @@
 {
-    "compilerOptions": {
-        "target": "ESNext",
-        "lib": [
-            "es6"
-        ],
-        "module": "CommonJS",
-        "outDir": "./dist",
-        "rootDir": "./src",
-        // "strict": true,
-        "esModuleInterop": true,
-        "allowJs": true,
-        "noImplicitAny": true,
-        "skipLibCheck": true,
-        "resolveJsonModule": true,
-        // "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-    },
-    "include": [
-        "./src/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "__test__/**/*.ts"
-    ]
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["es6"],
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    // "strict": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    // "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["src/typings", "./node_modules/@types"]
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/typings/**/*.d.ts",
+    "src/models/teamsUsers"
+  ],
+  "exclude": ["node_modules"]
 }
+

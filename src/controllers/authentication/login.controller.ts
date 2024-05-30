@@ -1,73 +1,65 @@
-import { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcrypt'
-import { UserData } from '../../constant/interfaces/users';
-import { pool } from '../../db/pgdb';
-import CustomError from '../../Errors/customError';
-import createTokens from '../../helpers/createTokens';
-import { GENERAL_ERROR, VALIDATIONS } from '../../constant/enums/validations';
+import { Request, Response, NextFunction } from "express";
+import bcrypt from "bcryptjs";
+import User from "../../models/users/users";
+import CustomError from "../../Errors/customError"; // Adjust the path to your CustomError class
+import createTokens from "../../helpers/createTokens"; // Adjust the path to your createTokens function
+import { GENERAL_ERROR, VALIDATIONS } from "../../constant/enums/validations"; // Adjust the path to your constants
 
+export const LoginControl = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password } = req.body;
 
-export const LoginControl = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+    console.log(email, password);
 
-        const { email, password } = req.body;
-
-        console.log(email, password)
-
-        if (!email || !password) {
-            return res.status(400).json({ message: VALIDATIONS.PROVIDE_CREDENTIALS, status: false });
-            // return next(new CustomError("Please Provide All Credentials", 401))
-        }
-
-
-        const foundUser = await pool.query(`SELECT * FROM users where email = '${email}'`);
-        // console.log('foundUser', foundUser.rows, foundUser.rows.length);
-
-        if (!foundUser.rows.length) {
-            console.log('ddd')
-            // return next(new CustomError("Invalid credentials", 400))
-            return res.status(400).json({ message: "invalid credentials", status: false });
-
-        }
-
-        // if (!foundUser?.isAccountVerified) {
-        //     return next(new CustomError("Please Verify Your Account First", 401))
-        // }
-
-        const passwordMatch = await bcrypt.compare(password, foundUser.rows[0].password);
-
-        if (!passwordMatch)
-            return res.status(400).json({ message: "Email or Password is Wrong", status: false });
-        // return next(new CustomError("Email or Password is Wrong", 401))
-
-        const { accessToken, refreshToken } = createTokens({
-            userId: foundUser.rows[0]?.id,
-            role: foundUser.rows[0]?.role,
-            email: foundUser.rows[0]?.email
-        })
-
-        await pool.query(`UPDATE users SET "refreshToken" = '${refreshToken}' WHERE email ='${email}'`);
-
-        //sending email to users
-
-        res.status(200).json({
-            data: {
-                email: foundUser.rows[0].email,
-                role: foundUser.rows[0].role,
-                id: foundUser.rows[0].id,
-                firstName: foundUser.rows[0].firstname,
-                lastName: foundUser.rows[0].lastname,
-                accessToken,
-                refreshToken
-            },
-            status: true,
-            message: "User Login Successfully"
-        });
-
-    } catch (err) {
-        console.log(err)
-        // return res.status(400).json({ message: GENERAL_ERROR.WENT_WRONG })
-        return next(new CustomError(GENERAL_ERROR.WENT_WRONG, 400))
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: VALIDATIONS.PROVIDE_CREDENTIALS, status: false });
     }
 
+    const foundUser: any = await User.findOne({ where: { email } });
+    if (!foundUser) {
+      console.log("ddd");
+      return res
+        .status(400)
+        .json({ message: "Invalid credentials", status: false });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, foundUser.password);
+
+    if (!passwordMatch) {
+      return res
+        .status(400)
+        .json({ message: "Email or Password is Wrong", status: false });
+    }
+
+    const { accessToken, refreshToken } = createTokens({
+      userId: foundUser.id,
+      role: foundUser.role,
+      email: foundUser.email,
+    });
+
+    await foundUser.update({ refresh_token: refreshToken });
+
+    res.status(200).json({
+      data: {
+        email: foundUser.email,
+        role: foundUser.role,
+        id: foundUser.id,
+        firstName: foundUser.firstname,
+        lastName: foundUser.lastname,
+        accessToken,
+        refreshToken,
+      },
+      status: true,
+      message: "User Login Successfully",
+    });
+  } catch (err) {
+    console.log("eeeerrrr", err);
+    return next(new CustomError(GENERAL_ERROR.WENT_WRONG, 400));
+  }
 };

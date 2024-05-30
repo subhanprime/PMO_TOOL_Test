@@ -3,3 +3,8 @@ export * from "./users/user";
 export * from "./account/active.controllers";
 export * from "./authentication/resetPassword.controllers";
 export * from "./projects/createProject";
+export * from "./teams/teams.controller";
+export * from "./designation/designation.controllers";
+export * from "./department/department.controllers";
+export * from "./handleCountryData/countryHandler";
+// export * from "./teams/teams.controller";

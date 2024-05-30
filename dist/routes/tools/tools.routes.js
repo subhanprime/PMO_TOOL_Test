@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const tools_controllers_1 = require("../../controllers/tools/tools.controllers");
+const router = (0, express_1.Router)();
+router.post("/create/:projectId", tools_controllers_1.createTools);
+router.get("/all", tools_controllers_1.getAllTools);
+router.put("/update/:toolId", tools_controllers_1.updateTool);
+router.get("/project/:projectId", tools_controllers_1.getToolsByProject);
+router.delete("/:toolId/remove/project/:projectId", tools_controllers_1.removeToolFromProject);
+exports.default = router;

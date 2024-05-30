@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const human_resources_handler_1 = require("../../controllers/humanResources/human_resources.handler");
+const router = (0, express_1.Router)();
+router.post("/create", human_resources_handler_1.addHumanResourceToProject);
+router.get("/project/:projectId", human_resources_handler_1.getAllResourcesOfProject);
+router.delete("/delete/:resourceId", human_resources_handler_1.deleteHumanResource);
+router.put("/update/:resourceId", human_resources_handler_1.updateHumanResource);
+exports.default = router;
